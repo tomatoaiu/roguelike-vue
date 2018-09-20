@@ -1,6 +1,11 @@
 <template>
   <div>
     <button @click="init()">init</button>
+    <button @click="oneRoom()">oneRoom</button>
+    <button @click="heightHalf()">height half</button>
+    <button @click="widthHalf()">width half</button>
+    <input type="text" placeholder="row" v-model="row">
+    <input type="text" placeholder="column" v-model="column">
     <ul v-for="(items, row) in board" :key="row">
       <component v-for="(item, col) of board[row]" :key="col" :is="item"></component>
     </ul>
@@ -21,8 +26,8 @@ export default {
   },
   data () {
     return {
-      column: 100,
-      row: 100,
+      column: 30,
+      row: 30,
       board: []
     }
   },
@@ -38,8 +43,47 @@ export default {
           this.board[r].push(WALL)
         }
       }
+    },
+    oneRoom () {
+      this.init()
 
-      let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: 100 - 1, hmin: 0, hmax: 100 - 1 })
+      let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: this.row - 1, hmin: 0, hmax: this.column - 1 })
+      for (let r = top; r <= bottom; r++) {
+        for (let c = left; c <= right; c++) {
+          this.$set(this.board[r], c, FLOOR)
+        }
+      }
+    },
+    heightHalf () { // 100なら50 0~49 50~99
+      this.init()
+
+      let hhalf = this.column / 2
+      let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: hhalf - 1, hmin: 0, hmax: this.column - 1 })
+      for (let r = top; r <= bottom; r++) {
+        for (let c = left; c <= right; c++) {
+          this.$set(this.board[r], c, FLOOR)
+        }
+      }
+
+      [top, bottom, left, right] = this.createRoom({ wmin: hhalf, wmax: this.row - 1, hmin: 0, hmax: this.column - 1 })
+      for (let r = top; r <= bottom; r++) {
+        for (let c = left; c <= right; c++) {
+          this.$set(this.board[r], c, FLOOR)
+        }
+      }
+    },
+    widthHalf () { // 100なら50 0~49 50~99
+      this.init()
+
+      let whalf = this.row / 2
+      let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: this.row - 1, hmin: 0, hmax: whalf - 1 })
+      for (let r = top; r <= bottom; r++) {
+        for (let c = left; c <= right; c++) {
+          this.$set(this.board[r], c, FLOOR)
+        }
+      }
+
+      [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: this.row - 1, hmin: whalf, hmax: this.column - 1 })
       for (let r = top; r <= bottom; r++) {
         for (let c = left; c <= right; c++) {
           this.$set(this.board[r], c, FLOOR)
