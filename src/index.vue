@@ -1,11 +1,32 @@
 <template>
   <div>
-    <button @click="init()">init</button>
-    <button @click="oneRoom()">oneRoom</button>
-    <button @click="heightHalf()">height half</button>
-    <button @click="widthHalf()">width half</button>
-    <input type="text" placeholder="row" v-model="row">
-    <input type="text" placeholder="column" v-model="column">
+    <div class="item">
+      <template v-if="notCreate === -1">
+        ng room
+      </template>
+      <template v-else>
+        ok room
+      </template>
+      | minimum room width: <input type="number" placeholder="min" v-model="min">
+    </div>
+    <div class="item">
+      <button @click="init()">init</button>
+      <button @click="oneRoom()">oneRoom</button>
+      <button @click="widthHalf()">width half</button>
+      <button @click="heightHalf()">height half</button>
+    </div>
+    <div class="item">
+      vertical length<input type="number" placeholder="row" v-model="row">
+      horizontal length<input type="number" placeholder="column" v-model="column">
+    </div>
+    <div class="item">
+      <button @click="widthN()">width N</button>
+      <button @click="heightN()">height N</button>
+    </div>
+    <div class="item">
+      vertical divisions: <input type="number" placeholder="height n" v-model="height">
+      horizontal divisions: <input type="number" placeholder="width n" v-model="width">
+    </div>
     <ul v-for="(items, row) in board" :key="row">
       <component v-for="(item, col) of board[row]" :key="col" :is="item"></component>
     </ul>
@@ -27,12 +48,29 @@ export default {
   data () {
     return {
       column: 30,
-      row: 30,
+      row: 32,
+      width: 3,
+      height: 3,
+      min: 5,
       board: []
     }
   },
   mounted () {
     this.init()
+  },
+  computed: {
+    notCreate () {
+      if (this.min * this.height * 2 > this.row) {
+        console.warn('not height')  
+        return -1
+      }
+      if (this.min * this.width * 2 > this.column) {
+        console.warn('not width')  
+        return -1
+      }
+      console.log('ok')
+      return 0
+    }
   },
   methods: {
     init () {
@@ -57,7 +95,7 @@ export default {
     heightHalf () { // 100なら50 0~49 50~99
       this.init()
 
-      let hhalf = this.column / 2
+      let hhalf = this.row / 2
       let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: hhalf - 1, hmin: 0, hmax: this.column - 1 })
       for (let r = top; r <= bottom; r++) {
         for (let c = left; c <= right; c++) {
@@ -75,7 +113,7 @@ export default {
     widthHalf () { // 100なら50 0~49 50~99
       this.init()
 
-      let whalf = this.row / 2
+      let whalf = this.column / 2
       let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: this.row - 1, hmin: 0, hmax: whalf - 1 })
       for (let r = top; r <= bottom; r++) {
         for (let c = left; c <= right; c++) {
@@ -90,14 +128,38 @@ export default {
         }
       }
     },
+    heightN () {
+      this.init()
+      const divsion = Math.floor(this.row / this.width)
+      for (let i = 0; i <= this.row - divsion; i += divsion) {
+        let [top, bottom, left, right] = this.createRoom({ wmin: i, wmax: i + divsion - 1, hmin: 0, hmax: this.column - 1 })
+        for (let r = top; r <= bottom; r++) {
+          for (let c = left; c <= right; c++) {
+            this.$set(this.board[r], c, FLOOR)
+          }
+        }
+      }
+    },
+    widthN () {
+      this.init()
+      const divsion = Math.floor(this.column / this.height)
+      for (let i = 0; i <= this.column - divsion; i += divsion) {
+        let [top, bottom, left, right] = this.createRoom({ wmin: 0, wmax: this.row - 1, hmin: i, hmax: i + divsion - 1 })
+        for (let r = top; r <= bottom; r++) {
+          for (let c = left; c <= right; c++) {
+            this.$set(this.board[r], c, FLOOR)
+          }
+        }
+      }
+    },
     createRoom ({ wmin, wmax, hmin, hmax }) {
       let top = Math.floor(Math.random() * (wmax - wmin) + wmin)
       let bottom = Math.floor(Math.random() * (wmax - wmin) + wmin)
       if (top > bottom) {
         [bottom, top] = [top, bottom]
       }
-      if (bottom - top <= 5) { // 部屋の縦幅が小さすぎる場合
-        bottom = top + 5
+      if (bottom - top <= this.min) { // 部屋の縦幅が小さすぎる場合
+        bottom = top + this.min
         while (bottom > wmax) {
           [top , bottom, left, right] = this.createRoom({ wmin, wmax, hmin, hmax })
         }
@@ -108,8 +170,8 @@ export default {
       if (left > right) {
         [right, left] = [left, right]
       }
-      if (right - left <= 5) { // 部屋の横幅が小さすぎる場合
-        right = left + 5
+      if (right - left <= this.min) { // 部屋の横幅が小さすぎる場合
+        right = left + this.min
         while (right > hmax) {
           [top, bottom, left, right] = this.createRoom({ wmin, wmax, hmin, hmax })
         }
@@ -133,5 +195,10 @@ ul {
   width: 10px;
   height: 10px;
   background-color: #444;
+}
+
+.item {
+  display: flex;
+  padding-bottom: 0.5rem;
 }
 </style>
