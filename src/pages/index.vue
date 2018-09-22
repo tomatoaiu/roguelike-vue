@@ -7,25 +7,25 @@
       <template v-else>
         ok room
       </template>
-      | minimum room width: <input type="number" placeholder="min" v-model="min">
+      | minimum room width: <vs-input-number v-model="min"/>
     </div>
     <div class="item">
-      <button @click="init()">init</button>
-      <button @click="oneRoom()">oneRoom</button>
-      <button @click="widthHalf()">width half</button>
-      <button @click="heightHalf()">height half</button>
+      <vs-button vs-color="primary" vs-type="filled" @click="init()">init</vs-button>
+      <vs-button vs-color="success" vs-type="filled" @click="oneRoom()">oneRoom</vs-button>
+      <vs-button vs-color="success" vs-type="filled" @click="widthHalf()">width half</vs-button>
+      <vs-button vs-color="success" vs-type="filled" @click="heightHalf()">height half</vs-button>
     </div>
     <div class="item">
-      vertical length<input type="number" placeholder="row" v-model="row">
-      horizontal length<input type="number" placeholder="column" v-model="column">
+      vertical length<vs-input-number v-model="row"/>
+      horizontal length<vs-input-number v-model="column"/>
     </div>
     <div class="item">
-      <button @click="widthN()">width N</button>
-      <button @click="heightN()">height N</button>
+      <vs-button vs-color="success" vs-type="filled" @click="widthN()">width N</vs-button>
+      <vs-button vs-color="success" vs-type="filled" @click="heightN()">height N</vs-button>
     </div>
     <div class="item">
-      vertical divisions: <input type="number" placeholder="height n" v-model="height">
-      horizontal divisions: <input type="number" placeholder="width n" v-model="width">
+      vertical divisions<vs-input-number v-model="height"/>
+      horizontal divisions<vs-input-number v-model="width"/>
     </div>
     <ul v-for="(items, row) in board" :key="row">
       <component v-for="(item, col) of board[row]" :key="col" :is="item"></component>
@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import Wall from './components/Wall.vue'
-import Floor from './components/Floor.vue'
+import Wall from '../components/Wall.vue'
+import Floor from '../components/Floor.vue'
 
 const WALL = 'wall'
 const FLOOR = 'floor'
@@ -62,10 +62,24 @@ export default {
     notCreate () {
       if (this.min * this.height * 2 > this.row) {
         console.warn('not height')  
+        this.$vs.notify({
+          time:2000,
+          title:'not height',
+          text:'min * height * 2 > row',
+          color:'danger',
+          icon:'query_builder'
+        })
         return -1
       }
       if (this.min * this.width * 2 > this.column) {
         console.warn('not width')  
+        this.$vs.notify({
+          time:2000,
+          title:'not width',
+          text:'min * width * 2 > column',
+          color:'danger',
+          icon:'query_builder'
+        })
         return -1
       }
       console.log('ok')
