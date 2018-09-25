@@ -3,16 +3,19 @@
     <div class="header">
       <h1>Rouguelike-Vue</h1>
     </div>
+    <router-view name="one" ></router-view>
 
-    <vs-tabs vs-position="left">
+    <!-- <router-view name="one"></router-view> -->
+
+    <!-- <vs-tabs vs-position="left">
       <vs-tab v-for="(item, i) in items" :key="i" :vs-label="item.label">
         <div>
           <component :is="item.component"></component>
         </div>
       </vs-tab>
-    </vs-tabs>
+    </vs-tabs> -->
+    
   </div>
-
 </template>
 
 <script>
@@ -23,7 +26,7 @@ export default {
     type: 'shadow',
     activeItem: 0,
     items: [
-      { component: 'index-page', label: 'Home' },
+      { component: 'index-page', label: 'One' },
       { component: 'index-page', label: 'Half' },
       { component: 'index-page', label: 'N Division' },
       { component: 'index-page', label: 'ト' },
