@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel ./src/index.html",
-    "deploy": "rimraf docs; parcel build ./src/index.html -d docs"
+    "deploy": "rimraf docs; parcel build ./src/index.html -d docs",
+    "clean": "rimraf .cache dist docs"
   },
   "keywords": [],
   "author": "",
