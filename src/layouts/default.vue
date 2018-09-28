@@ -17,6 +17,7 @@
 
 <script>
 import IndexPage from '../pages/index.vue'
+import HalfPage from '../pages/half.vue'
 
 export default {
   data:()=>({
@@ -24,7 +25,7 @@ export default {
     activeItem: 0,
     items: [
       { component: 'index-page', label: 'Home' },
-      { component: 'index-page', label: 'Half' },
+      { component: 'half-page', label: 'Half' },
       { component: 'index-page', label: 'N Division' },
       { component: 'index-page', label: 'ト' },
       { component: 'index-page', label: '十' },
@@ -35,7 +36,8 @@ export default {
     ]
   }),
   components: {
-    'index-page': IndexPage
+    'index-page': IndexPage,
+    'half-page': HalfPage
   }
 }
 </script>
