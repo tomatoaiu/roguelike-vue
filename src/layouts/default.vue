@@ -18,15 +18,18 @@
 <script>
 import IndexPage from '../pages/index.vue'
 import HalfPage from '../pages/half.vue'
+import NDivisionPage from '../pages/n-division.vue'
+import OneRoomPage from '../pages/one-room.vue'
 
 export default {
   data:()=>({
     type: 'shadow',
     activeItem: 0,
     items: [
-      { component: 'index-page', label: 'Home' },
+      { component: 'index-page', label: 'Hoom' },
+      { component: 'one-room-page', label: 'One Room' },
       { component: 'half-page', label: 'Half' },
-      { component: 'index-page', label: 'N Division' },
+      { component: 'n-division-page', label: 'N Division' },
       { component: 'index-page', label: 'ト' },
       { component: 'index-page', label: '十' },
       { component: 'index-page', label: '□' },
@@ -37,7 +40,9 @@ export default {
   }),
   components: {
     'index-page': IndexPage,
-    'half-page': HalfPage
+    'half-page': HalfPage,
+    'n-division-page': NDivisionPage,
+    'one-room-page': OneRoomPage
   }
 }
 </script>
