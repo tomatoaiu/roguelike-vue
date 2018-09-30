@@ -26,7 +26,7 @@ export default {
     type: 'shadow',
     activeItem: 0,
     items: [
-      { component: 'index-page', label: 'Hoom' },
+      { component: 'index-page', label: 'Home' },
       { component: 'one-room-page', label: 'One Room' },
       { component: 'half-page', label: 'Half' },
       { component: 'n-division-page', label: 'N Division' },
